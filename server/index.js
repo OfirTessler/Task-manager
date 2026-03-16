@@ -49,7 +49,7 @@ function sanitize(str) {
 }
 
 // ── Validation helpers ────────────────────────────────────────────────────────
-const USERNAME_RE = /^[a-zA-Z0-9]{3,30}$/;
+const USERNAME_RE = /^[a-zA-Z0-9._@-]{3,50}$/;
 const VALID_CATEGORIES = ['work', 'home', 'personal'];
 
 // ── Auth middleware ──────────────────────────────────────────────────────────
@@ -76,7 +76,7 @@ app.post('/api/register', authLimiter, (req, res) => {
   const password = req.body.password ?? '';
 
   if (!USERNAME_RE.test(username)) {
-    return res.status(400).json({ error: 'שם משתמש חייב להכיל 3-30 תווים אלפאנומריים בלבד' });
+    return res.status(400).json({ error: 'שם משתמש חייב להכיל 3-50 תווים: אותיות, ספרות, נקודה, מקף, קו תחתון או @' });
   }
   if (typeof password !== 'string' || password.length < 8) {
     return res.status(400).json({ error: 'הסיסמה חייבת להכיל לפחות 8 תווים' });
