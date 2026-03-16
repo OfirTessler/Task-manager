@@ -1,6 +1,6 @@
 const BASE = window.location.hostname === 'localhost'
   ? 'http://localhost:3001/api'
-  : 'https://task-manager-api-c9id.onrender.com/api';
+  : 'https://task-manager-api-2-85f3.onrender.com/api';
 
 function getToken() {
   return localStorage.getItem('token');
