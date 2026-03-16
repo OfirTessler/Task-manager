@@ -10,13 +10,18 @@ const initDb = require('./db');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET || 'change-this-secret-in-production';
-const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || 'http://localhost:5173';
+const ALLOWED_ORIGINS = (process.env.FRONTEND_ORIGIN || '')
+  .split(',')
+  .map(o => o.trim())
+  .filter(Boolean)
+  .concat(['http://localhost:5173', 'https://manager-app-gll6.onrender.com'])
+  .filter((v, i, a) => a.indexOf(v) === i);
 
 // ── Security headers ──────────────────────────────────────────────────────────
 app.use(helmet());
 
 // ── CORS ──────────────────────────────────────────────────────────────────────
-app.use(cors({ origin: FRONTEND_ORIGIN, credentials: true }));
+app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }));
 
 // ── Rate limiters ─────────────────────────────────────────────────────────────
 const authLimiter = rateLimit({
