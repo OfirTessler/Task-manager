@@ -23,10 +23,13 @@ app.use(helmet());
 // ── CORS ──────────────────────────────────────────────────────────────────────
 app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }));
 
+// Trust the first proxy hop so req.ip reflects the real client IP
+app.set('trust proxy', 1);
+
 // ── Rate limiters ─────────────────────────────────────────────────────────────
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  max: 15,
   message: { error: 'יותר מדי ניסיונות, נסה שוב בעוד 15 דקות' },
   standardHeaders: true,
   legacyHeaders: false,
